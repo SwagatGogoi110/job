@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "202765177230",
+    "project_id": "jobfind-a0e4d",
+    "storage_bucket": "jobfind-a0e4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202765177230:android:a385c7369d3febfec5d4df",
+        "android_client_info": {
+          "package_name": "com.example.jobfind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202765177230-ch4i9ir7gl8pl5njetudk08un32qso7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs3k1UL-xIjhYpr-gRst4bvqZLg1c1sGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202765177230-ch4i9ir7gl8pl5njetudk08un32qso7h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
