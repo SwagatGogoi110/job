@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jobfind/screens/home/widgets/job_list.dart';
 import 'package:jobfind/screens/home/widgets/search_card.dart';
 import 'package:jobfind/screens/home/widgets/tag_list.dart';
+import 'package:jobfind/twitterfunc/views/create_tweet_view.dart';
 import 'widgets/home_app_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -56,7 +57,10 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff039BE5),
         elevation: 0,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => CreateTweet()));
+        },
         child: const Icon(
           Icons.add,
           color: Colors.white,

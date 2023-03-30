@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jobfind/models/job.dart';
+import 'package:jobfind/screens/home/widgets/bookmark.dart';
 import 'package:jobfind/widgets/icon_test.dart';
 
 class JobItem extends StatelessWidget {
@@ -46,11 +46,11 @@ class JobItem extends StatelessWidget {
                   )
                 ],
               ),
-              Icon(
-                job.isMark ? Icons.bookmark : Icons.bookmark_outline_outlined,
-                color:
-                    job.isMark ? Theme.of(context).primaryColor : Colors.black,
-              )
+              BookmarkIcon(
+                  isMarked: false,
+                  onPressed: (isMarked) {
+                    isMarked ? Colors.red : Colors.grey;
+                  })
             ],
           ),
           const SizedBox(height: 15),
