@@ -39,7 +39,7 @@ class _CreateTweetState extends ConsumerState<CreateTweet> {
     final tweet = {
       'isVerified':true,
       'content': tweetTextController.text,
-      'owner':'Kaustav',
+      'owner':'Annie Bryant',
       'date_field':DateTime.now()
     };
     tweetsCollection.add(tweet);
