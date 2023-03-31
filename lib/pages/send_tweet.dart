@@ -47,16 +47,11 @@ class _CreateTweetState extends ConsumerState<CreateTweet> {
     final tweet = {
       'isVerified': true,
       'content': tweetTextController.text,
-<<<<<<< HEAD
       'owner': 'Annie Bryant',
       'date_field': DateTime.now(),
       'filename':
           uploadedFileUrl != null ? uploadedFileUrl!.split('/').last : null,
       'url': uploadedFileUrl,
-=======
-      'owner':'Annie Bryant',
-      'date_field':DateTime.now()
->>>>>>> 6525f1a4eb8d990b54273137ccd9ff94599f56b4
     };
     tweetsCollection.add(tweet);
   }
