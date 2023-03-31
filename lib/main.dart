@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '../pages/news.dart';
-import '../pages/feed.dart';
+import 'package:jobfind/pages/jobs_page.dart';
+import 'package:jobfind/pages/news.dart';
+import 'package:jobfind/pages/feed.dart';
 import 'firebase_options.dart';
-import '../global_variables.dart';
-import '../pages/send_tweet.dart';
-import '../pages/jobs_page.dart';
+import 'package:jobfind/global_variables.dart';
+import 'package:jobfind/pages/send_tweet.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

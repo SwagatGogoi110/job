@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:jobfind/widgets/popup.dart';
 import '../global_variables.dart';
 
 class FeedInformation extends StatefulWidget {
@@ -8,8 +9,10 @@ class FeedInformation extends StatefulWidget {
 }
 
 class _FeedInformationState extends State<FeedInformation> {
-  final Stream<QuerySnapshot> _usersStream =
-      FirebaseFirestore.instance.collection('feed').orderBy('date_field',descending: true).snapshots();
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('feed')
+      .orderBy('date_field', descending: true)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +28,13 @@ class _FeedInformationState extends State<FeedInformation> {
         }
 
         return ListView(
-          physics:const ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           shrinkWrap: true,
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
             return Padding(
-              padding: const EdgeInsets.only(top:8.0),
+              padding: const EdgeInsets.only(top: 8.0),
               child: Column(
                 children: [
                   Row(
@@ -46,7 +49,11 @@ class _FeedInformationState extends State<FeedInformation> {
                             color: Colors.black,
                             child: Align(
                                 alignment: Alignment.center,
-                                child: Text(data['owner'][0] as String,textAlign: TextAlign.center, style: displayNameStyle,)),
+                                child: Text(
+                                  data['owner'][0] as String,
+                                  textAlign: TextAlign.center,
+                                  style: displayNameStyle,
+                                )),
                           ),
                         ),
                       ),
@@ -66,12 +73,13 @@ class _FeedInformationState extends State<FeedInformation> {
                                 const SizedBox(
                                   width: 6,
                                 ),
-                                data['isVerified'] ?
-                                    const Icon(
-                                      Icons.verified_outlined,
-                                      size: 18,
-                                      color: Colors.blue,
-                                    ): const SizedBox(height: 1)
+                                data['isVerified']
+                                    ? const Icon(
+                                        Icons.verified_outlined,
+                                        size: 18,
+                                        color: Colors.blue,
+                                      )
+                                    : const SizedBox(height: 1)
                               ],
                             ),
                             const SizedBox(
@@ -82,6 +90,30 @@ class _FeedInformationState extends State<FeedInformation> {
                               softWrap: false,
                               maxLines: 20,
                               overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (data['url'] != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => Popup(
+                                          imageUrl: data['url'] as String),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: data['url'] != null
+                                  ? Image.network(
+                                      data['url'] as String,
+                                      height: 200,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : const SizedBox.shrink(),
                             ),
                           ],
                         ),

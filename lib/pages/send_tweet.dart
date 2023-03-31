@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class FloatingBtn extends StatefulWidget {
   const FloatingBtn({Key? key}) : super(key: key);
@@ -13,9 +17,13 @@ class _FloatingBtnState extends State<FloatingBtn> {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-        backgroundColor:const Color(0xff039BE5),
+        backgroundColor: const Color(0xff039BE5),
         elevation: 0,
-        child:const Icon(Icons.add, color: Colors.white, size: 30,),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 30,
+        ),
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const CreateTweet()));
@@ -34,13 +42,16 @@ class _CreateTweetState extends ConsumerState<CreateTweet> {
   final tweetTextController = TextEditingController();
   final CollectionReference tweetsCollection =
       FirebaseFirestore.instance.collection('feed');
-
+  String? uploadedFileUrl;
   void shareTweet() {
     final tweet = {
-      'isVerified':true,
+      'isVerified': true,
       'content': tweetTextController.text,
-      'owner':'Kaustav',
-      'date_field':DateTime.now()
+      'owner': 'Annie Bryant',
+      'date_field': DateTime.now(),
+      'filename':
+          uploadedFileUrl != null ? uploadedFileUrl!.split('/').last : null,
+      'url': uploadedFileUrl,
     };
     tweetsCollection.add(tweet);
   }
@@ -58,6 +69,38 @@ class _CreateTweetState extends ConsumerState<CreateTweet> {
           },
           icon: const Icon(Icons.close, size: 30),
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              FilePickerResult? result =
+                  await FilePicker.platform.pickFiles(type: FileType.image);
+              if (result != null) {
+                PlatformFile file = result.files.first;
+                String fileName = file.name;
+                String filePath = file.path!;
+                try {
+                  await firebase_storage.FirebaseStorage.instance
+                      .ref('uploads/$fileName')
+                      .putFile(File(filePath));
+                  String downloadURL = await firebase_storage
+                      .FirebaseStorage.instance
+                      .ref('uploads/$fileName')
+                      .getDownloadURL();
+                  setState(() {
+                    uploadedFileUrl = downloadURL;
+                  });
+                } catch (e) {
+                  print(e);
+                }
+              }
+            },
+            icon: Icon(
+              Icons.image,
+              size: 30,
+            ),
+            padding: EdgeInsets.only(top: 0.2, right: 0.3),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -78,7 +121,8 @@ class _CreateTweetState extends ConsumerState<CreateTweet> {
                   const SizedBox(width: 10),
                   const CircleAvatar(
                     radius: 20,
-                    backgroundImage:NetworkImage('https://raw.githubusercontent.com/SwagatGogoi110/job/main/assets/images/avatar.png'),
+                    backgroundImage: NetworkImage(
+                        'https://raw.githubusercontent.com/SwagatGogoi110/job/main/assets/images/avatar.png'),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -90,6 +134,19 @@ class _CreateTweetState extends ConsumerState<CreateTweet> {
                       ),
                     ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 60),
+              Row(
+                children: [
+                  uploadedFileUrl == null
+                      ? const Text('No image selected')
+                      : Flexible(
+                          child: Image.network(
+                            uploadedFileUrl!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                 ],
               ),
             ],
